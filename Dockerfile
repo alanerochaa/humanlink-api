@@ -2,10 +2,15 @@ FROM openjdk:22
 
 WORKDIR /app
 
-COPY . ./
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
 
-# Permissão para mvnw
+# Copia só arquivos necessários para build (evita copiar código antes de build, se quiser otimizar)
+
 RUN chmod +x ./mvnw
+
+COPY src ./src
 
 RUN ./mvnw -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install
 
