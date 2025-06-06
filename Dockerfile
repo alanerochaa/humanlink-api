@@ -1,17 +1,24 @@
-# Use the Eclipse temurin alpine official image
-# https://hub.docker.com/_/eclipse-temurin
+# Use the Eclipse Temurin official image (alpine ou slim poderia ser mais leve, mas openjdk:22 direto tá ok)
 FROM openjdk:22
 
 # Create and change to the app directory.
 WORKDIR /app
 
-# Copy local code to the container image.
-COPY . ./
+# Copiar somente os arquivos necessários para o build, evitando copiar arquivos desnecessários
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY src src
 
-# Build the app.
+# Dar permissão de execução ao mvnw
+RUN chmod +x mvnw
+
+# Build the app usando o Maven Wrapper
 RUN ./mvnw -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install
 
+# Expor a porta
 EXPOSE 8080
 ENV PORT=8080
-# Run the quarkus app
-CMD ["sh", "-c", "java -jar target/quarkus-app/quarkus-run.jar"]
+
+# Comando para rodar a aplicação Quarkus
+CMD ["java", "-jar", "target/quarkus-app/quarkus-run.jar"]
