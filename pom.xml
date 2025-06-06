@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.humanlink</groupId>
-    <artifactId>humanlink</artifactId>
+    <artifactId>humanlink-api</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
