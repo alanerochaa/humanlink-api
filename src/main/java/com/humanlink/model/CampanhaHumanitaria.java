@@ -39,6 +39,6 @@ public class CampanhaHumanitaria extends BaseEntity {
     private LocalDate dataFim;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id") // nome da coluna na tabela
+    @JoinColumn(name = "usuario_id", nullable = false) // Torna obrigatório o vínculo
     private Usuario usuario;
 }

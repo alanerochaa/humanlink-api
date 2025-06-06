@@ -6,9 +6,11 @@ import com.humanlink.model.CampanhaHumanitaria;
 import com.humanlink.model.Usuario;
 import com.humanlink.repository.CampanhaHumanitariaRepository;
 import com.humanlink.util.ValidatorUtils;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,13 +45,13 @@ public class CampanhaHumanitariaService {
         CampanhaHumanitaria campanha = campanhaRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Campanha Humanitária com ID " + id + " não encontrada."));
 
-        campanha.setDescricao(dto.getDescricao() != null ? dto.getDescricao() : campanha.getDescricao());
-        campanha.setStatusCampanha(dto.getStatusCampanha() != null ? dto.getStatusCampanha() : campanha.getStatusCampanha());
-        campanha.setPublicoAlvo(dto.getPublicoAlvo() != null ? dto.getPublicoAlvo() : campanha.getPublicoAlvo());
-        campanha.setTipoCampanha(dto.getTipoCampanha() != null ? dto.getTipoCampanha() : campanha.getTipoCampanha());
-        campanha.setResponsavel(dto.getResponsavel() != null ? dto.getResponsavel() : campanha.getResponsavel());
-        campanha.setDataInicio(dto.getDataInicio() != null ? dto.getDataInicio() : campanha.getDataInicio());
-        campanha.setDataFim(dto.getDataFim() != null ? dto.getDataFim() : campanha.getDataFim());
+        if (dto.getDescricao() != null) campanha.setDescricao(dto.getDescricao());
+        if (dto.getStatusCampanha() != null) campanha.setStatusCampanha(dto.getStatusCampanha());
+        if (dto.getPublicoAlvo() != null) campanha.setPublicoAlvo(dto.getPublicoAlvo());
+        if (dto.getTipoCampanha() != null) campanha.setTipoCampanha(dto.getTipoCampanha());
+        if (dto.getResponsavel() != null) campanha.setResponsavel(dto.getResponsavel());
+        if (dto.getDataInicio() != null) campanha.setDataInicio(dto.getDataInicio());
+        if (dto.getDataFim() != null) campanha.setDataFim(dto.getDataFim());
 
         if (dto.getIdUsuario() != null) {
             Usuario usuario = new Usuario();
@@ -98,6 +100,7 @@ public class CampanhaHumanitariaService {
             usuario.setIdUsuario(dto.getIdUsuario());
             entity.setUsuario(usuario);
         }
+
         return entity;
     }
 }
