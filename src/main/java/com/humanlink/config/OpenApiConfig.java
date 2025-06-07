@@ -17,7 +17,7 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
         securitySchemeName = "apiKey",
         type = SecuritySchemeType.APIKEY,
         in = SecuritySchemeIn.HEADER,
-        apiKeyName = "X-API-key",  // mantém o padrão do header em lowercase no "key"
+        apiKeyName = "X-API-Key",
         description = "API Key necessária para autenticação"
 )
 public class OpenApiConfig {
