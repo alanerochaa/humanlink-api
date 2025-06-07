@@ -14,7 +14,17 @@ public class MyApiKeyFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        // NÃO FAZ NADA: libera todas as requisições sem validação de API Key
-        System.out.println("MyApiKeyFilter ativo, mas sem validação - liberando todas requisições.");
+        String path = requestContext.getUriInfo().getPath();
+
+        // libera swagger e api-docs sem autenticação
+        if (path.startsWith("swagger") || path.startsWith("api-docs")) {
+            return;
+        }
+
+        // Se quiser, aqui você pode validar a API Key para as outras rotas
+        // Exemplo: pegar header X-API-Key e validar
+
+        // Por enquanto, libera tudo
+        System.out.println("Filtro ativo, liberando rota: " + path);
     }
 }
