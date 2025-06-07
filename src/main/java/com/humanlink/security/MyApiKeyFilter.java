@@ -22,10 +22,10 @@ public class MyApiKeyFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
         String path = requestContext.getUriInfo().getPath();
 
-        // Liberar o Swagger/OpenAPI e rota /humanlink sem API key
-        if (path.equals("humanlink") ||
-                path.startsWith("humanlink/swagger-ui") ||
-                path.startsWith("humanlink/openapi")) {
+        // Libera acesso sem API key para raiz e para swagger/openapi
+        if (path.isEmpty() || path.equals("/") ||
+                path.startsWith("swagger-ui") ||
+                path.startsWith("openapi")) {
             return; // permite acesso sem validar API key
         }
 
