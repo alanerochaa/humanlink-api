@@ -2,12 +2,12 @@ package com.humanlink.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 @SuperBuilder
@@ -20,7 +20,7 @@ public class CampanhaHumanitariaDTO {
     @Schema(example = "1")
     private Integer id;
 
-    @NotNull
+    @NotNull(message = "A descrição é obrigatória.")
     @Size(max = 4000)
     @JsonProperty("descricao")
     @Schema(example = "Campanha de arrecadação para vítimas do terremoto")
@@ -54,7 +54,7 @@ public class CampanhaHumanitariaDTO {
     @Schema(example = "2025-06-02")
     private LocalDate dataFim;
 
-    @NotNull
+    @NotNull(message = "O ID do usuário é obrigatório.")
     @JsonProperty("id_usuario")
     @Schema(example = "2")
     private Integer idUsuario;

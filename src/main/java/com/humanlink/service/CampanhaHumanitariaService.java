@@ -36,18 +36,20 @@ public class CampanhaHumanitariaService {
 
     @Transactional
     public CampanhaHumanitariaDTO criarCampanha(CampanhaHumanitariaDTO dto) {
-        LOGGER.info("Criando campanha humanitária: " + dto.getDescricao());
+        LOGGER.info("Criando campanha humanitária");
         ValidatorUtils.validate(dto);
 
+        Usuario usuario = usuarioRepository.buscarPorId(dto.getIdUsuario())
+                .orElseThrow(() -> new NotFoundException("Usuário com ID " + dto.getIdUsuario() + " não encontrado."));
+
         CampanhaHumanitaria campanha = toEntity(dto);
+        campanha.setUsuario(usuario);
 
         campanhaRepository.salvar(campanha);
-
         return toDTO(campanha);
     }
 
     public CampanhaHumanitariaDTO buscarPorId(Integer id) {
-        LOGGER.info("Buscando campanha humanitária por ID: " + id);
         CampanhaHumanitaria campanha = campanhaRepository.buscarPorId(id);
         if (campanha == null) {
             throw new NotFoundException("Campanha Humanitária com ID " + id + " não encontrada.");
@@ -57,7 +59,6 @@ public class CampanhaHumanitariaService {
 
     @Transactional
     public CampanhaHumanitariaDTO atualizar(Integer id, CampanhaHumanitariaDTO dto) {
-        LOGGER.info("Atualizando campanha humanitária com ID: " + id);
         CampanhaHumanitaria campanha = campanhaRepository.buscarPorId(id);
         if (campanha == null) {
             throw new NotFoundException("Campanha Humanitária com ID " + id + " não encontrada.");
@@ -71,24 +72,12 @@ public class CampanhaHumanitariaService {
         if (dto.getDataInicio() != null) campanha.setDataInicio(dto.getDataInicio());
         if (dto.getDataFim() != null) campanha.setDataFim(dto.getDataFim());
 
-        if (dto.getIdUsuario() != null) {
-            Usuario usuario = usuarioRepository.buscarPorId(dto.getIdUsuario())
-                    .orElseThrow(() -> new NotFoundException("Usuário com ID " + dto.getIdUsuario() + " não encontrado."));
-            campanha.setUsuario(usuario);
-        } else {
-            campanha.setUsuario(null);
-        }
-
-        campanhaRepository.salvar(campanha);
-
-        return toDTO(campanha);
+        return toDTO(campanhaRepository.salvar(campanha));
     }
 
     @Transactional
     public void deletar(Integer id) {
-        LOGGER.info("Deletando campanha humanitária com ID: " + id);
-        boolean deleted = campanhaRepository.deletarPorId(id);
-        if (!deleted) {
+        if (!campanhaRepository.deletarPorId(id)) {
             throw new NotFoundException("Campanha Humanitária com ID " + id + " não encontrada.");
         }
     }
@@ -103,27 +92,19 @@ public class CampanhaHumanitariaService {
                 .responsavel(entity.getResponsavel())
                 .dataInicio(entity.getDataInicio())
                 .dataFim(entity.getDataFim())
-                .idUsuario(entity.getUsuario() != null ? entity.getUsuario().getIdUsuario() : null)
+                .idUsuario(entity.getUsuario().getIdUsuario())
                 .build();
     }
 
     private CampanhaHumanitaria toEntity(CampanhaHumanitariaDTO dto) {
-        CampanhaHumanitaria campanha = new CampanhaHumanitaria();
-
-        campanha.setDescricao(dto.getDescricao());
-        campanha.setStatusCampanha(dto.getStatusCampanha());
-        campanha.setPublicoAlvo(dto.getPublicoAlvo());
-        campanha.setTipoCampanha(dto.getTipoCampanha());
-        campanha.setResponsavel(dto.getResponsavel());
-        campanha.setDataInicio(dto.getDataInicio());
-        campanha.setDataFim(dto.getDataFim());
-
-        if (dto.getIdUsuario() != null) {
-            Usuario usuario = usuarioRepository.buscarPorId(dto.getIdUsuario())
-                    .orElseThrow(() -> new NotFoundException("Usuário com ID " + dto.getIdUsuario() + " não encontrado."));
-            campanha.setUsuario(usuario);
-        }
-
-        return campanha;
+        CampanhaHumanitaria entity = new CampanhaHumanitaria();
+        entity.setDescricao(dto.getDescricao());
+        entity.setStatusCampanha(dto.getStatusCampanha());
+        entity.setPublicoAlvo(dto.getPublicoAlvo());
+        entity.setTipoCampanha(dto.getTipoCampanha());
+        entity.setResponsavel(dto.getResponsavel());
+        entity.setDataInicio(dto.getDataInicio());
+        entity.setDataFim(dto.getDataFim());
+        return entity;
     }
 }

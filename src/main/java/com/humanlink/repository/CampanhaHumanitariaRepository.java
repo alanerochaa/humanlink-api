@@ -15,8 +15,7 @@ public class CampanhaHumanitariaRepository {
     private EntityManager em;
 
     public List<CampanhaHumanitaria> listarTodos() {
-        return em.createQuery("FROM CampanhaHumanitaria", CampanhaHumanitaria.class)
-                .getResultList();
+        return em.createQuery("FROM CampanhaHumanitaria", CampanhaHumanitaria.class).getResultList();
     }
 
     public CampanhaHumanitaria buscarPorId(Integer id) {
