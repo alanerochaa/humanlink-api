@@ -10,7 +10,10 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.util.List;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
+
+@SecurityRequirement(name = "apiKey")
 @Path("/voluntarios")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)

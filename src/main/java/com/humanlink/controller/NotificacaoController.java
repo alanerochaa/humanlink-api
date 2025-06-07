@@ -14,11 +14,13 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestPath;
 import jakarta.ws.rs.NotFoundException;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
+
+@SecurityRequirement(name = "apiKey")
 @Path("/notificacao")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

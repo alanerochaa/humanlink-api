@@ -11,10 +11,11 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-
 import java.util.List;
 import java.util.Objects;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
+@SecurityRequirement(name = "apiKey")
 @Path("/usuario")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
