@@ -6,11 +6,14 @@ import com.humanlink.service.CampanhaHumanitariaService;
 import com.humanlink.util.ValidatorUtils;
 
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -53,14 +56,19 @@ public class CampanhaHumanitariaController {
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Criar uma nova campanha humanitária")
-    @APIResponse(responseCode = "201", description = "Campanha humanitária criada")
+    @APIResponse(responseCode = "201", description = "Campanha humanitária criada",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CampanhaHumanitariaDTO.class)))
+    @Transactional
     public Response criar(@Valid CampanhaHumanitariaDTO dto) {
         LOGGER.info("Criando campanha humanitária");
         ValidatorUtils.validate(dto);
         CampanhaHumanitariaDTO campanhaCriada = service.criarCampanha(dto);
         return Response.status(Response.Status.CREATED).entity(campanhaCriada).build();
     }
+
 
     @PUT
     @Path("/{id}")
