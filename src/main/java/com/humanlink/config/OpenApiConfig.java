@@ -2,8 +2,8 @@ package com.humanlink.config;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
-import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeType;
 import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeIn;
+import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeType;
 import org.eclipse.microprofile.openapi.annotations.info.Info;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
@@ -17,9 +17,8 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
         securitySchemeName = "apiKey",
         type = SecuritySchemeType.APIKEY,
         in = SecuritySchemeIn.HEADER,
-        apiKeyName = "X-API-Key",
+        apiKeyName = "X-API-key",  // chave com "k" minúsculo
         description = "API Key necessária para autenticação"
 )
 public class OpenApiConfig {
-
 }
