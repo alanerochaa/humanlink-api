@@ -7,7 +7,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class CampanhaHumanitariaRepository {
@@ -15,16 +14,17 @@ public class CampanhaHumanitariaRepository {
     @PersistenceContext
     private EntityManager em;
 
-    public List<CampanhaHumanitaria> listAll() {
-        return em.createQuery("FROM CampanhaHumanitaria", CampanhaHumanitaria.class).getResultList();
+    public List<CampanhaHumanitaria> listarTodos() {
+        return em.createQuery("FROM CampanhaHumanitaria", CampanhaHumanitaria.class)
+                .getResultList();
     }
 
-    public Optional<CampanhaHumanitaria> findById(Integer id) {
-        return Optional.ofNullable(em.find(CampanhaHumanitaria.class, id));
+    public CampanhaHumanitaria buscarPorId(Integer id) {
+        return em.find(CampanhaHumanitaria.class, id);
     }
 
     @Transactional
-    public CampanhaHumanitaria persist(CampanhaHumanitaria campanha) {
+    public CampanhaHumanitaria salvar(CampanhaHumanitaria campanha) {
         if (campanha.getIdCampanha() == null) {
             em.persist(campanha);
             return campanha;
@@ -34,7 +34,7 @@ public class CampanhaHumanitariaRepository {
     }
 
     @Transactional
-    public boolean deleteById(Integer id) {
+    public boolean deletarPorId(Integer id) {
         CampanhaHumanitaria campanha = em.find(CampanhaHumanitaria.class, id);
         if (campanha != null) {
             em.remove(campanha);

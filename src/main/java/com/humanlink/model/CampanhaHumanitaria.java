@@ -2,6 +2,7 @@ package com.humanlink.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = true)
@@ -39,6 +40,6 @@ public class CampanhaHumanitaria extends BaseEntity {
     private LocalDate dataFim;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false) // Torna obrigatório o vínculo
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 }

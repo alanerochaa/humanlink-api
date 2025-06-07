@@ -54,6 +54,7 @@ public class CampanhaHumanitariaDTO {
     @Schema(example = "2025-06-02")
     private LocalDate dataFim;
 
+    @NotNull
     @JsonProperty("id_usuario")
     @Schema(example = "2")
     private Integer idUsuario;
