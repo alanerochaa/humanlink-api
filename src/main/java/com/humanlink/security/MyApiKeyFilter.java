@@ -1,4 +1,4 @@
-package com.humanlink.security;
+package com.rail.response.system.security;
 
 import jakarta.annotation.Priority;
 import jakarta.ws.rs.Priorities;
@@ -20,22 +20,8 @@ public class MyApiKeyFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        String path = requestContext.getUriInfo().getPath();
-
-        // Libera acesso sem API key para raiz e para swagger/openapi
-        if (path.isEmpty() || path.equals("/") ||
-                path.startsWith("swagger-ui") ||
-                path.startsWith("openapi")) {
-            return; // permite acesso sem validar API key
-        }
-
         String apiKeyRequest = requestContext.getHeaderString("X-API-key");
-        if (apiKeyRequest == null || !apiKeyRequest.equals(apiKey)) {
-            requestContext.abortWith(
-                    Response.status(Response.Status.UNAUTHORIZED)
-                            .entity("API key is missing or invalid")
-                            .build()
-            );
-        }
     }
 }
+
+
