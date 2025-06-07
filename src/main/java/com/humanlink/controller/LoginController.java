@@ -13,14 +13,13 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.net.URI;
 import java.util.List;
-import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
 
-@SecurityRequirement(name = "apiKey")
 @Path("/login")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Tag(name = "Login", description = "Operações relacionadas a login")
+
 public class LoginController {
 
     @Inject

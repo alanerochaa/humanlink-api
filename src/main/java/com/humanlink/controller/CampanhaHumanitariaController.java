@@ -18,10 +18,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.util.List;
 import java.util.logging.Logger;
-import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
-
-@SecurityRequirement(name = "apiKey")
 @Path("/campanhas-humanitarias")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

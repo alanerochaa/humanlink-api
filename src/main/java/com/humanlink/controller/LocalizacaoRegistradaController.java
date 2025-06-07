@@ -13,10 +13,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.util.List;
-import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
-
-@SecurityRequirement(name = "apiKey")
 @Path("/localizacoes-registradas")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
