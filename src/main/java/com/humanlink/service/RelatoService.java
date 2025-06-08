@@ -31,28 +31,31 @@ public class RelatoService {
 
     public List<RelatoDTO> listarTodos() {
         List<Relato> relatos = relatoRepository.listarTodos();
-        return relatos.stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        return relatos.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     public Optional<RelatoDTO> buscarPorId(Integer id) {
-        return relatoRepository.buscarPorId(id).map(this::toDTO);
+        Optional<Relato> relatoOpt = relatoRepository.buscarPorId(id);
+        return relatoOpt.map(this::toDTO);
     }
 
     @Transactional
     public Integer criarRelato(RelatoDTO dto) {
+        // Verificar existência do usuário
         Usuario usuario = usuarioRepository.buscarPorId(dto.getIdUsuario())
-                .orElseThrow(() -> new NotFoundException("Usuário com ID " + dto.getIdUsuario() + " não encontrado"));
+                .orElseThrow(() -> new NotFoundException("Usuário com ID " + dto.getIdUsuario() + " não encontrado."));
 
+        // Verificar existência da área de desastre
         AreaDesastre areaDesastre = areaDesastreRepository.buscarPorId(dto.getIdDesastre())
-                .orElseThrow(() -> new NotFoundException("Área de desastre com ID " + dto.getIdDesastre() + " não encontrada"));
+                .orElseThrow(() -> new NotFoundException("Área de desastre com ID " + dto.getIdDesastre() + " não encontrada."));
 
         Relato relato = toEntity(dto);
         relato.setUsuario(usuario);
         relato.setAreaDesastre(areaDesastre);
-        relato.setDataCriacao(LocalDateTime.now());
-        relato.setDataAtualizacao(LocalDateTime.now());
+
+        LocalDateTime agora = LocalDateTime.now();
+        relato.setDataCriacao(agora);
+        relato.setDataAtualizacao(agora);
 
         relatoRepository.persistir(relato);
         return relato.getIdRelato();
@@ -61,15 +64,23 @@ public class RelatoService {
     @Transactional
     public RelatoDTO atualizar(Integer id, RelatoDTO dto) {
         Relato relatoExistente = relatoRepository.buscarPorId(id)
-                .orElseThrow(() -> new NotFoundException("Relato com ID " + id + " não encontrado"));
+                .orElseThrow(() -> new NotFoundException("Relato com ID " + id + " não encontrado."));
 
-        Usuario usuario = usuarioRepository.buscarPorId(dto.getIdUsuario())
-                .orElseThrow(() -> new NotFoundException("Usuário com ID " + dto.getIdUsuario() + " não encontrado"));
+        // Verificar existência do usuário (caso idUsuario seja diferente)
+        if (!relatoExistente.getUsuario().getIdUsuario().equals(dto.getIdUsuario())) {
+            Usuario usuario = usuarioRepository.buscarPorId(dto.getIdUsuario())
+                    .orElseThrow(() -> new NotFoundException("Usuário com ID " + dto.getIdUsuario() + " não encontrado."));
+            relatoExistente.setUsuario(usuario);
+        }
 
-        AreaDesastre areaDesastre = areaDesastreRepository.buscarPorId(dto.getIdDesastre())
-                .orElseThrow(() -> new NotFoundException("Área de desastre com ID " + dto.getIdDesastre() + " não encontrada"));
+        // Verificar existência da área de desastre (caso idDesastre seja diferente)
+        if (!relatoExistente.getAreaDesastre().getIdDesastre().equals(dto.getIdDesastre())) {
+            AreaDesastre areaDesastre = areaDesastreRepository.buscarPorId(dto.getIdDesastre())
+                    .orElseThrow(() -> new NotFoundException("Área de desastre com ID " + dto.getIdDesastre() + " não encontrada."));
+            relatoExistente.setAreaDesastre(areaDesastre);
+        }
 
-        // Atualiza os campos
+        // Atualizar campos restantes
         relatoExistente.setNome(dto.getNome());
         relatoExistente.setTitulo(dto.getTitulo());
         relatoExistente.setMensagem(dto.getMensagem());
@@ -80,8 +91,7 @@ public class RelatoService {
         relatoExistente.setTipoDesastreOutro(dto.getTipoDesastreOutro());
         relatoExistente.setUrgencia(dto.getUrgencia());
         relatoExistente.setStatus(dto.getStatus());
-        relatoExistente.setUsuario(usuario);
-        relatoExistente.setAreaDesastre(areaDesastre);
+
         relatoExistente.setDataAtualizacao(LocalDateTime.now());
 
         Relato atualizado = relatoRepository.atualizar(relatoExistente);
@@ -90,13 +100,13 @@ public class RelatoService {
 
     @Transactional
     public void deletar(Integer id) {
-        boolean deletado = relatoRepository.deletarPorId(id);
-        if (!deletado) {
-            throw new NotFoundException("Relato com ID " + id + " não encontrado");
+        boolean excluiu = relatoRepository.deletarPorId(id);
+        if (!excluiu) {
+            throw new NotFoundException("Relato com ID " + id + " não encontrado.");
         }
     }
 
-    // Conversão Entity -> DTO
+    // Conversão de entidade para DTO
     private RelatoDTO toDTO(Relato relato) {
         if (relato == null) return null;
 
@@ -119,7 +129,7 @@ public class RelatoService {
                 .build();
     }
 
-    // Conversão DTO -> Entity (sem relacionamentos, que são setados separadamente)
+    // Conversão de DTO para entidade (sem relacionamentos)
     private Relato toEntity(RelatoDTO dto) {
         if (dto == null) return null;
 
@@ -134,7 +144,7 @@ public class RelatoService {
         relato.setTipoDesastreOutro(dto.getTipoDesastreOutro());
         relato.setUrgencia(dto.getUrgencia());
         relato.setStatus(dto.getStatus());
-        // usuário e área de desastre serão setados após recuperação das entidades
+        // usuario e areaDesastre serão setados no método criarRelato
         return relato;
     }
 }
