@@ -4,10 +4,8 @@ import com.humanlink.exception.dto.ResponseDTO;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
-import jakarta.ws.rs.ext.Provider;
 import java.time.LocalDateTime;
 
-@Provider
 public class RouteNotFoundException implements ExceptionMapper<NotFoundException> {
     @Override
     public Response toResponse(NotFoundException exception) {
