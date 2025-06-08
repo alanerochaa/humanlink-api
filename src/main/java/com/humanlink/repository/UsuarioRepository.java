@@ -2,26 +2,27 @@ package com.humanlink.repository;
 
 import com.humanlink.model.Usuario;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
 public class UsuarioRepository {
 
-    @PersistenceContext
-    private EntityManager em;
+    @Inject
+    EntityManager em;
 
     public List<Usuario> listarTodos() {
-        return em.createQuery("SELECT u FROM Usuario u", Usuario.class)
-                .getResultList();
+        return em.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
     }
 
     public Optional<Usuario> buscarPorId(Integer id) {
-        return Optional.ofNullable(em.find(Usuario.class, id));
+        Usuario usuario = em.find(Usuario.class, id);
+        return Optional.ofNullable(usuario);
     }
 
     @Transactional
@@ -42,12 +43,10 @@ public class UsuarioRepository {
     }
 
     @Transactional
-    public boolean deletarPorId(Integer id) {
+    public void deletarPorId(Integer id) {
         Usuario usuario = em.find(Usuario.class, id);
         if (usuario != null) {
             em.remove(usuario);
-            return true;
         }
-        return false;
     }
 }

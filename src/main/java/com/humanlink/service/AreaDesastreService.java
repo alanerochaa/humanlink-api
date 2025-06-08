@@ -26,7 +26,7 @@ public class AreaDesastreService {
     @Transactional
     public AreaDesastre criar(AreaDesastre area) {
         ValidatorUtils.validate(area);
-        return repository.salvarOuAtualizar(area);
+        return repository.salvar(area);
     }
 
     @Transactional
@@ -43,7 +43,7 @@ public class AreaDesastreService {
         existente.setLongitude(novaArea.getLongitude());
         existente.setDataOcorrencia(novaArea.getDataOcorrencia());
 
-        return repository.salvarOuAtualizar(existente);
+        return repository.atualizar(existente);
     }
 
     @Transactional
