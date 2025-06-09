@@ -195,3 +195,16 @@ Altere o arquivo src/main/resources/application.properties com suas credenciais 
 5. Acessar a documentação Swagger
 Acesse em:
 🔗 https://humanlink-api-production.up.railway.app/swagger-ui/
+
+
+```
+
+## 👩🏻‍💻 Autores
+
+- [**Alane Rocha rm561052**](https://github.com/alanerochaa)  
+  
+
+- [**Anna Beatriz Bonfim rm559561**](https://github.com/annabonfim)  
+  
+
+- [**Maria Eduarda Araujo rm560944**](https://github.com/DudaAraujo14)  
